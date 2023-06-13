@@ -1,0 +1,1 @@
+# speaker-emb-ja-ecapa-tdnn
