@@ -7,6 +7,8 @@
 # 推論の実行
 
 ```python
+import torch
+import torch.nn.functional as F
 import torchaudio
 from ecapatdnn import SpeakerEmbedding
 
@@ -15,8 +17,12 @@ sample_rate = 16000
 ckpt_path = "ecapa_tdnn.pth"
 
 wave, sr = torchaudio.load(audio_path)
-wave = torchaudio.transforms.Resample(sr, sample_rate)(wave).unsqueeze(0)
+wave = torchaudio.transforms.Resample(sr, sample_rate)(wave) # (batch:1, wave length)
 
 model = SpeakerEmbedding(ckpt_path)
-emb = model.vectorize(wave)
+emb = model.vectorize(wave) # (batch:1, 128)
+emb = F.normalize(torch.FloatTensor(emb), p=2, dim=1).detach().cpu()
+
+# embedding similarity
+score = torch.mean(torch.matmul(emb, emb.T)) # 1
 ```
