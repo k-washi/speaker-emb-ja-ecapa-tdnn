@@ -22,7 +22,7 @@ wave, sr = torchaudio.load(audio_path)
 wave = torchaudio.transforms.Resample(sr, model.sample_rate)(wave) # (batch:1, wave length)
 
 
-emb = model.extract_embedding(wave) # (batch:1, 128)
+emb = model.extract_embedding(wave) # (batch:, hidden_size)
 emb = F.normalize(torch.FloatTensor(emb), p=2, dim=1).detach().cpu()
 
 # embedding similarity
