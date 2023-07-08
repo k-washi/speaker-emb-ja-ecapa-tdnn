@@ -164,11 +164,9 @@ class ECAPA_TDNN(nn.Module):
         self.bn5 = nn.BatchNorm1d(3072)
         self.fc6 = nn.Linear(3072, hidden_size)
         self.bn6 = nn.BatchNorm1d(hidden_size)
-        self.fc7 = nn.Linear(hidden_size, hidden_size)
-        self.bn7 = nn.BatchNorm1d(hidden_size)
+        #self.fc7 = nn.Linear(hidden_size, hidden_size)
+        #self.bn7 = nn.BatchNorm1d(hidden_size)
     
-    def preprocess(self, x: torch.Tensor):
-        pass
 
     def vectorize(self, x: torch.Tensor) -> torch.Tensor:
         """音声から特徴抽出 (time_indexは、可変でOK)
@@ -203,56 +201,65 @@ class ECAPA_TDNN(nn.Module):
         x = self.fc6(x)
         x = self.bn6(x)
         return x
-    
-    def forward(self, x):
-        x = self.vecterize(x)
-        x = self.fc7(x)
-        x = self.bn7(x)
-
-        return x
 
 
-class SpeakerEmbedding():
+CHANNEL_SIZE = 1024
+SAMPLE_RATE = 16000
+N_FFT = 512
+WIN_LENGTH = 400
+HOP_LENGTH = 160
+F_MIN = 20
+F_MAX = 7600
+N_MELS = 80
+
+class _SpeakerEmbeddingJa():
     def __init__(self, 
-                 ckpt_path,
-                 channel_size=1024,
                  hidden_size=128,
-                 sample_rate=16000,
-                 n_fft=512,
-                 win_length=400,
-                 hop_length=160,
-                 f_min=20,
-                 f_max=7600,
-                 n_mels=80
         ) -> None:
+        
+        self.sample_rate = SAMPLE_RATE
         self.model = ECAPA_TDNN(
-            channel_size=channel_size,
+            channel_size=CHANNEL_SIZE,
             hidden_size=hidden_size
         )
-        self.model.load_state_dict(torch.load(ckpt_path))
         self.model.eval()
         
         self.preprocess = Wave2MelSpecPreprocess(
-            sample_rate=sample_rate,
-            n_fft=n_fft,
-            win_length=win_length,
-            hop_length=hop_length,
-            f_min=f_min,
-            f_max=f_max,
-            n_mels=n_mels
+            sample_rate=SAMPLE_RATE,
+            n_fft=N_FFT,
+            win_length=WIN_LENGTH,
+            hop_length=HOP_LENGTH,
+            f_min=F_MIN,
+            f_max=F_MAX,
+            n_mels=N_MELS
         )
         self.preprocess.eval()
         
         for param in self.model.parameters():
             param.requires_grad = False
     
-    def vectorize(self, x: torch.Tensor):
+    def extract_embedding(self, x: torch.Tensor):
         if x.ndim == 1:
             x = x.unsqueeze(0)
             
-        with torch.no_grad():
+        with torch.inference_mode():
             x = self.preprocess(x)
             x = self.model.vectorize(x)
         
         return x
         
+
+def SpeakerEmbeddingJa(model_path="ecapatdnn_l128_n2340_clean.ckpt", hidden_size=128) -> _SpeakerEmbeddingJa:
+    model = _SpeakerEmbeddingJa(hidden_size=hidden_size)
+    model.model.load_state_dict(torch.load(model_path))
+    model.model.eval()
+    model.preprocess.eval()
+    
+    for p in model.model.parameters():
+        p.requires_grad = False
+    
+    return model
+    
+    
+    
+

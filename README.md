@@ -10,19 +10,53 @@
 import torch
 import torch.nn.functional as F
 import torchaudio
-from ecapatdnn import SpeakerEmbedding
+from ecapatdnn import SpeakerEmbeddingJa
 
 audio_path = "sample.wav"
-sample_rate = 16000
-ckpt_path = "ecapa_tdnn.pth"
+ckpt_path = "ecapatdnn_l512_n4690_st.pth"
+hidden_size = 512
+
+model = SpeakerEmbeddingJa(ckpt_path, hidden_size)
 
 wave, sr = torchaudio.load(audio_path)
-wave = torchaudio.transforms.Resample(sr, sample_rate)(wave) # (batch:1, wave length)
+wave = torchaudio.transforms.Resample(sr, model.sample_rate)(wave) # (batch:1, wave length)
 
-model = SpeakerEmbedding(ckpt_path)
-emb = model.vectorize(wave) # (batch:1, 128)
+
+emb = model.extract_embedding(wave) # (batch:1, 128)
 emb = F.normalize(torch.FloatTensor(emb), p=2, dim=1).detach().cpu()
 
 # embedding similarity
 score = torch.mean(torch.matmul(emb, emb.T)) # 1
 ```
+
+# モデル
+
+|モデル|speaker num|hidden_size|
+|-|-|-|
+|ecapatdnn_l512_n4690_st.pth|4960|512|
+|ecapatdnn_l128_n2340_clean_st.pth|2340|128|
+
+
+```
+pip install gdown
+
+# ecapatdnn_l512_n4690_st.pth
+gdown https://drive.google.com/u/1/uc?id=1h5cKOZyqXWRz203IeJysuJQVrVPfueZw -O ecapatdnn_l512_n4690_st.pth
+
+# ecapatdnn_l128_n2340_clean_st.pth
+gdown https://drive.google.com/u/1/uc?id=1Qa0lqrKduUCJzagqe59fQ5R8-xQmeIVG -O ecapatdnn_l128_n2340_clean_st.pth
+```
+
+# ライセンス
+
+使用する際は、このリポジトリーにいいねして、ライセンス明記してください。
+
+```
+[speaker-emb-ja-ecapa-tdnn](https://github.com/k-washi/speaker-emb-ja-ecapa-tdnn)
+```
+
+と書くだけでOKです。
+
+FineTuningなどの事前学習モデルとして使用する場合も、同様です。
+
+これらを利用したとしても、コードの公開義務はありません！
