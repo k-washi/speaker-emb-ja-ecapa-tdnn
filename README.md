@@ -31,10 +31,11 @@ score = torch.mean(torch.matmul(emb, emb.T)) # 1
 
 # モデル
 
-|モデル|speaker num|hidden_size|
-|-|-|-|
-|ecapatdnn_l512_n4690_st.pth|4960|512|
-|ecapatdnn_l128_n2340_clean_st.pth|2340|128|
+|モデル|speaker num|hidden_size|-|
+|-|-|-|-|
+|ecapatdnn_l512_n4690_st.pth|4960|512||
+|ecapatdnn_l128_n2340_clean_st.pth|2340|128||
+|ecapa_tdnn_l512_n4690_st_volume_aug.pth|4960|512|音量のデータ拡張追加|
 
 
 ```
@@ -45,6 +46,9 @@ gdown https://drive.google.com/u/1/uc?id=1h5cKOZyqXWRz203IeJysuJQVrVPfueZw -O ec
 
 # ecapatdnn_l128_n2340_clean_st.pth
 gdown https://drive.google.com/u/1/uc?id=1Qa0lqrKduUCJzagqe59fQ5R8-xQmeIVG -O ecapatdnn_l128_n2340_clean_st.pth
+
+# ecapa_tdnn_l512_n4690_st_volume_aug.pth
+gdown https://drive.google.com/u/1/uc?id=1QrwdyDRlkFHqjKBeZ5HbreaOI_thrbTv -O ecapa_tdnn_l512_n4690_st_volume_aug.pth
 ```
 
 # ライセンス
