@@ -35,7 +35,7 @@ score = torch.mean(torch.matmul(emb, emb.T)) # 1
 |-|-|-|-|
 |ecapatdnn_l512_n4690_st.pth|4960|512||
 |ecapatdnn_l128_n2340_clean_st.pth|2340|128||
-|ecapa_tdnn_l512_n4690_st_volume_aug.pth|4960|512|音量のデータ拡張追加|
+|ecapa_tdnn_l512_n4690_st_volume_aug.pth|4960|512|音量のデータ拡張|
 
 
 ```
