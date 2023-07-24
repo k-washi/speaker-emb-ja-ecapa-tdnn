@@ -34,7 +34,7 @@ score = torch.mean(torch.matmul(emb, emb.T)) # 1
 音声合成や声質変換向けの話者Embeddingとして、`ecapatdnn_l512_n4690_st.pth`と`ecapatdnn_l128_n2340_clean_st.pth`を公開している。`hidden_size`
 が128の場合は、クリーンなデータを使用しかつ、次元が小さいことで、より話者ごとのEmbedding空間の境界が連続になっていると考えている。
 
-話者認識向けの話者Embeddingとして、`ecapa_tdnn_l512_n4690_st_volume_aug.pth`を
+話者認識向けの話者Embeddingとして、ボリューム方向のデータ拡張も行った`ecapa_tdnn_l512_n4690_st_volume_aug.pth`を公開しています。
 
 |モデル|speaker num|hidden_size|-|
 |-|-|-|-|
