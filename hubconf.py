@@ -12,9 +12,7 @@ from speakeremb_ja_ecapatdnn.ecapatdnn import _SpeakerEmbeddingJa
 def ecapatdnn_ja_l512(progress: bool = True, pretrained: bool = True) -> _SpeakerEmbeddingJa:
     model = _SpeakerEmbeddingJa(hidden_size=512)
     if pretrained:
-        output_dir = Path("/tmp/speaker-emb-ja-ecapa-tdnn")
-        output_dir.mkdir(exist_ok=True, parents=True)
-        output_fp = output_dir / "ecapatdnn_ja_l512.pth"
+        output_fp = Path("/tmp/speaker-emb-ja-ecapa-tdnn-l512.pth")
         gdown.download(
             "https://drive.google.com/u/1/uc?id=1h5cKOZyqXWRz203IeJysuJQVrVPfueZw",
             str(output_fp),
