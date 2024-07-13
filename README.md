@@ -4,19 +4,19 @@
 
 学習リポジトリ: [spk_emb_ja](https://github.com/k-washi/spk_emb_ja)
 
+sampling frequency: 16000Hz
+
 # 推論の実行
+
+類似度のしきい値は0.2くらいがちょうどよいかも。
 
 ```python
 import torch
 import torch.nn.functional as F
 import torchaudio
-from ecapatdnn import SpeakerEmbeddingJa
 
 audio_path = "sample.wav"
-ckpt_path = "ecapatdnn_l512_n4690_st.pth"
-hidden_size = 512
-
-model = SpeakerEmbeddingJa(ckpt_path, hidden_size)
+model = torch.hub.load("k-washi/speaker-emb-ja-ecapa-tdnn", "ecapatdnn_ja_l512", trust_repo=True, pretrained=True)
 
 wave, sr = torchaudio.load(audio_path)
 wave = torchaudio.transforms.Resample(sr, model.sample_rate)(wave) # (batch:1, wave length)
@@ -42,19 +42,13 @@ score = torch.mean(torch.matmul(emb, emb.T)) # 1
 |ecapatdnn_l128_n2340_clean_st.pth|2340|128||
 |ecapa_tdnn_l512_n4690_st_volume_aug.pth|4960|512|音量のデータ拡張|
 
-
 ```
-pip install gdown
-
-# ecapatdnn_l512_n4690_st.pth
-gdown https://drive.google.com/u/1/uc?id=1h5cKOZyqXWRz203IeJysuJQVrVPfueZw -O ecapatdnn_l512_n4690_st.pth
-
-# ecapatdnn_l128_n2340_clean_st.pth
-gdown https://drive.google.com/u/1/uc?id=1Qa0lqrKduUCJzagqe59fQ5R8-xQmeIVG -O ecapatdnn_l128_n2340_clean_st.pth
-
-# ecapa_tdnn_l512_n4690_st_volume_aug.pth
-gdown https://drive.google.com/u/1/uc?id=1QrwdyDRlkFHqjKBeZ5HbreaOI_thrbTv -O ecapa_tdnn_l512_n4690_st_volume_aug.pth
+import torch
+model = torch.hub.load("k-washi/speaker-emb-ja-ecapa-tdnn", "ecapatdnn_ja_l512", trust_repo=True, pretrained=True)
+model = torch.hub.load("k-washi/speaker-emb-ja-ecapa-tdnn", "ecapatdnn_ja_l128_clean", trust_repo=True, pretrained=True)
+model = torch.hub.load("k-washi/speaker-emb-ja-ecapa-tdnn", "ecapatdnn_ja_l512_va", trust_repo=True, pretrained=True)
 ```
+
 
 # ライセンス
 
