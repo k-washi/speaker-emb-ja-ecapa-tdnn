@@ -62,7 +62,7 @@ def ecapatdnn_ja_l128_clean(progress: bool = True, pretrained: bool = True) -> _
     return model
 
 def ecapatdnn_ja_l512_va(progress: bool = True, pretrained: bool = True) -> _SpeakerEmbeddingJa:
-    model = _SpeakerEmbeddingJa(hidden_size=128)
+    model = _SpeakerEmbeddingJa(hidden_size=512)
     if pretrained:
         output_fp = Path("/tmp/speaker-emb-ja-ecapa-tdnn-l512-volume-aug.pth")
         gdown.download(
