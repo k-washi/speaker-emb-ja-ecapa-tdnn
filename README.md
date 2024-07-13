@@ -58,7 +58,7 @@ gdown https://drive.google.com/u/1/uc?id=1QrwdyDRlkFHqjKBeZ5HbreaOI_thrbTv -O ec
 
 # ライセンス
 
-使用する際は、このリポジトリーにいいねして、ライセンス明記してください。
+可能なら使用する際は、このリポジトリーにいいねして、ライセンス明記してください（しなくてもよいです。自由に使ってください）。
 
 ```
 [speaker-emb-ja-ecapa-tdnn](https://github.com/k-washi/speaker-emb-ja-ecapa-tdnn)
@@ -66,6 +66,5 @@ gdown https://drive.google.com/u/1/uc?id=1QrwdyDRlkFHqjKBeZ5HbreaOI_thrbTv -O ec
 
 と書くだけでOKです。
 
-FineTuningなどの事前学習モデルとして使用する場合も、同様です。
-
+FineTuningなどの事前学習モデルとして使用する場合も、同様で可能なら明記してほしいです。
 これらを利用したとしても、コードの公開義務はありません！
