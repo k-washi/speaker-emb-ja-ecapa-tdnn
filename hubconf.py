@@ -21,7 +21,7 @@ def ecapatdnn_ja_l512(progress: bool = True, pretrained: bool = True) -> _Speake
         model.model.load_state_dict(torch.load(output_fp))
     
     model.model.eval()
-    model.model.preprocess.eval()
+    model.preprocess.eval()
     for param in model.model.parameters():
         param.requires_grad = False
     return model
